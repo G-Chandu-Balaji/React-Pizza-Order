@@ -6,7 +6,7 @@ import Loaader from "./Loaader";
 
 function AppLayout() {
   const navigate = useNavigation();
-  console.log(navigate);
+ 
   const isLoading = navigate.state === "loading";
   return (
     <div className="grid  grid-rows-[auto_1fr_auto] h-screen">

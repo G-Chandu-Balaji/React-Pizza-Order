@@ -1,12 +1,23 @@
 import { formatCurrency } from "../../utils/helpers";
 import Button from "../../ui/Button"
-import { addItem } from "../cart/CartSlice";
-import {useDispatch} from "react-redux"
+import { addItem, getCurrentQuantityById } from "../cart/CartSlice";
+import {useDispatch, useSelector} from "react-redux"
+import DeleteItem from "../cart/DeleteItem";
+import UpdateQuantity from "../cart/UpdateQuantity";
 
 function MenuItem( {pizza} ) {
-  const dispatch = useDispatch()
   const { id, name, unitPrice, ingredients, soldOut, imageUrl } = pizza;
+
   
+  
+  const currentQuantity = useSelector(getCurrentQuantityById(id));
+
+  
+  const isIncart = currentQuantity > 0;
+  const dispatch = useDispatch()
+
+  
+
   function handleAddToCart(){
     const newItem = {
       pizzaId: id,
@@ -26,8 +37,14 @@ function MenuItem( {pizza} ) {
         <p className="font-medium ">{name}</p>
         <p className="text-sm text-stone-500 capitalize italic">{ingredients.join(", ")}</p>
         <div className="mt-auto flex items-center justify-between">
+        
           {!soldOut ? <p className="text-sm">{formatCurrency(unitPrice)}</p> : <p className="text-sm text-stone-500 font-medium uppercase">Sold out</p>}
-          {!soldOut && <Button type="small" onClick={handleAddToCart}>Add to Cart</Button>}
+          {isIncart && (<div className="flex items-center gap-2 sm:gap-8"> 
+            <UpdateQuantity pizzaId={id} currentQuantity={currentQuantity} />
+            
+            <DeleteItem pizzaId={id}/>
+             </div>)}
+          {!soldOut && !isIncart && <Button type="small" onClick={handleAddToCart}>Add to Cart</Button>}
         </div>
       </div>
     </li>

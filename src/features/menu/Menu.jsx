@@ -4,7 +4,7 @@ import Menuitem from "./MenuItem";
 
 function Menu() {
   const menu = useLoaderData();
-  console.log(menu);
+  
   return (
     <ul className="px-4 divide-y divide-stone-200">
       {menu.map((pizza) => (
